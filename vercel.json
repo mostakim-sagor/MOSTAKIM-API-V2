@@ -1,0 +1,23 @@
+{
+    "version": 2,
+    "buildCommand": "pnpm install --no-frozen-lockfile --dangerously-allow-all-builds && cd web && pnpm build",
+    "outputDirectory": "web/build",
+    "installCommand": "pnpm install --no-frozen-lockfile --dangerously-allow-all-builds",
+    "framework": null,
+    "rewrites": [
+        { "source": "/(.*)", "destination": "/404.html" }
+    ],
+    "headers": [
+        {
+            "source": "/(.*)",
+            "headers": [
+                { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" },
+                { "key": "Cross-Origin-Embedder-Policy", "value": "require-corp" },
+                { "key": "Cross-Origin-Resource-Policy", "value": "cross-origin" }
+            ]
+        }
+    ],
+    "env": {
+        "WEB_DEFAULT_API": "https://api.cobalt.tools"
+    }
+}

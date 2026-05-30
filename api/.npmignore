@@ -1,0 +1,15 @@
+# development & test files
+src/util/test.js
+src/util/tests/
+
+# config files
+.env
+.env.*
+.eslintrc*
+.prettierrc*
+nodemon.json
+
+# misc
+*.log
+.DS_Store
+.gitignore

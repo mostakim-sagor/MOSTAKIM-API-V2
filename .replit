@@ -1,0 +1,67 @@
+modules = ["web", "nodejs-22"]
+[agent]
+expertMode = true
+stack = "BEST_EFFORT_FALLBACK"
+
+[nix]
+channel = "stable-25_05"
+
+[userenv]
+
+[userenv.shared]
+WEB_DEFAULT_API = "http://localhost:9000"
+API_URL = "http://localhost:9000"
+API_PORT = "9000"
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start application"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Backend API"
+
+[[workflows.workflow]]
+name = "Start application"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd /home/runner/workspace && pnpm install --no-frozen-lockfile --dangerously-allow-all-builds && cd web && WEB_DEFAULT_API=http://localhost:9000 pnpm dev"
+waitForPort = 5000
+
+[[workflows.workflow]]
+name = "Backend API"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd /home/runner/workspace && pnpm install --no-frozen-lockfile --dangerously-allow-all-builds && cd api && API_URL=http://localhost:9000 API_PORT=9000 node src/mostakim.js"
+waitForPort = 9000
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[[ports]]
+localPort = 9000
+externalPort = 9000
+
+[deployment]
+deploymentTarget = "autoscale"
+run = ["bash", "-c", "cd /home/runner/workspace && pnpm install --no-frozen-lockfile --dangerously-allow-all-builds && node api/src/cobalt.js & cd web && WEB_DEFAULT_API=http://localhost:9000 pnpm build && npx serve build -l 5000"]
+build = ["bash", "-c", "cd /home/runner/workspace && pnpm install --no-frozen-lockfile --dangerously-allow-all-builds"]

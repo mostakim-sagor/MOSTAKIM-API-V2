@@ -1,0 +1,15 @@
+{
+    "name": "@mostakim-dl/client",
+    "version": "2.0.0",
+    "description": "javascript client for mostakim api",
+    "main": "index.js",
+    "scripts": {},
+    "keywords": ["mostakim", "downloader", "api"],
+    "author": "mostakim",
+    "license": "MIT",
+    "devDependencies": {
+        "prettier": "3.7.4",
+        "tsup": "^8.5.1",
+        "typescript": "^5.9.3"
+    }
+}
